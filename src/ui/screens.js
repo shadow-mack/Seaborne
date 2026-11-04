@@ -27,7 +27,7 @@ export function showTitle(game) {
   const screen = el('div', { class: 'screen title' }, [
     leaves,
     el('div', { class: 'title-card' }, [
-      el('div', { class: 'logo', 'aria-label': 'Tidewander' }, [el('span', { class: 'logo-word', text: 'Tidewander' }), el('span', { class: 'logo-sub', text: 'An Island Life Adventure' })]),
+      el('div', { class: 'logo', 'aria-label': 'Seaborne' }, [el('span', { class: 'logo-word', text: 'Seaborne' }), el('span', { class: 'logo-sub', text: 'An Island Life Adventure' })]),
       menu,
       el('p', { class: 'title-tip', text: pickTip() }),
     ]),

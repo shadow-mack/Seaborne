@@ -2,6 +2,7 @@ import { storageGet, storageSet, storageRemove } from './utils.js';
 import { ROD_MIGRATION } from '../fishing/gear.js';
 import { FREE_COSMETICS } from '../people/cosmetics.js';
 
+// storage keys keep the game's old name (Tidewander) so existing saves still load
 const KEY = 'tidewander.save.v1';
 const SETTINGS_KEY = 'tidewander.settings.v1';
 
