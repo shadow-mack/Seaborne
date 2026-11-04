@@ -743,6 +743,17 @@ function pushOut(pos, radius, c) {
 // ════════════════════════════════════════════════════════════
 //  Island layouts
 // ════════════════════════════════════════════════════════════
+// Where Palmora's restoration projects and the aquarium stand (rot: the way the front faces).
+export const VILLAGE_SITES = {
+  aquarium: { x: -16, z: 40, rot: Math.PI / 2, r: 8, h: 3.6, w: 9, d: 6 },
+  fountain: { x: 13, z: 24, rot: -Math.PI / 2, r: 6.5, h: 3.0, w: 6, d: 6 },
+  windmill: { x: -24, z: 28, rot: 1.45, r: 5.5, h: 3.9, w: 5, d: 5 },
+  market: { x: -13, z: -19, rot: 0.48, r: 8, h: 4.1, w: 9, d: 6 },
+  observatory: { x: -24, z: -36, rot: 0.1, r: 6.5, h: 6.0, w: 6, d: 6 },
+  stage: { x: 26, z: 33, rot: -Math.PI / 2, r: 7.5, h: 4.0, w: 9, d: 5 },
+  board: { x: -6, z: -6, rot: 0.35, r: 2, h: 2.3, w: 3, d: 1 },
+};
+
 const LAYOUTS = {
   palmora: {
     nature: { palms: 55, trees: 26, pines: 10, bushes: 60, rocks: 26, grass: 2200 },
@@ -755,6 +766,14 @@ const LAYOUTS = {
       w.path(-22, -8, -36, -9, 1.6);
       w.path(0, 6, 25, 14, 1.6);
       w.path(8, -4, 28, -30, 1.4);
+      // restoration sites and the aquarium (built later through quests)
+      for (const st of Object.values(VILLAGE_SITES)) w.flatten(st.x, st.z, st.r, st.h, st.f ?? 6);
+      w.path(0, 40, -9.5, 40, 1.5); // aquarium
+      w.path(0, 24, 7.5, 24, 1.3); // fountain garden
+      w.path(0, 30, -20, 28, 1.3); // windmill
+      w.path(-10, 0, -12, -13, 1.3); // market hall
+      w.path(-22, -8, -24, -30, 1.3); // observatory
+      w.path(0, 33, 19, 33, 1.4); // festival stage
     },
     build(w, b) {
       const h = (x, z) => w.heightAt(x, z);
@@ -861,6 +880,9 @@ const LAYOUTS = {
       w.circle(mx + 2.5, mz - 2.5, 1.6);
       w.spots.moth = { x: mx + 1.6, z: mz + 1.0, yaw: -2.2, wander: 0 };
       w.landmark(mx + 2.5, mz - 2.5, "Madison's Camp", 'The night merchant appears here between 7 PM and 7 AM.', 2);
+
+      for (const st of Object.values(VILLAGE_SITES)) w.occupy(st.x, st.z, st.r + 1.5);
+      w.villageSites = VILLAGE_SITES;
 
       w.spots.mayor = { x: 0, z: -5.2, yaw: 0, wander: 1.5 };
       w.spots.luna = { x: -11.5, z: 2, yaw: Math.PI / 2, wander: 1 };

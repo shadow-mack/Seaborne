@@ -113,6 +113,10 @@ export function objectiveTarget(game, obj, quest = null) {
       if (kind === 'irrigation') return npcTarget('coco');
       if (kind === 'rod') return w.id === 'palmora' ? npcTarget(obj.target === 'rod:deepsea' ? 'reyes' : 'finn') : sailTo('palmora', 'Rods are sold on Palmora');
       if (kind === 'dex') return fishingSpot();
+      if (kind === 'project' || kind === 'aquarium') {
+        if (w.id !== 'palmora') return sailTo('palmora', 'Palmora');
+        return kind === 'project' ? game.village.targetFor(obj.target.split(':')[1]) : game.aquarium.targetFor();
+      }
       return null;
     }
     case 'water':
@@ -137,6 +141,11 @@ export function objectiveTarget(game, obj, quest = null) {
       return sailTo(obj.target, `Sail to ${ISLANDS[obj.target].name}`);
     case 'compete':
       return npcTarget('mo');
+    case 'forecast': {
+      if (w.id !== 'palmora') return sailTo('palmora', 'The observatory is on Palmora');
+      const o = w.interactables.find((i) => i.icon === '🔭');
+      return o ? { pos: o.pos.clone(), label: 'Observatory — press E' } : null;
+    }
     case 'defeat': {
       const foes = w.enemies.filter((e) => !e.dead && (obj.target !== 'blackfin' || e.boss));
       const f = nearest(foes);

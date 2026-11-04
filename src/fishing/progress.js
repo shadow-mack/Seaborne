@@ -35,6 +35,7 @@ export const FishingProgressMethods = {
       }, 1200);
     }
     const points = this.competition.onCatch(f, weight);
+    this.aquarium.onCatch(f);
     this.audio.sfx(tierIndex(f.tier) >= 3 ? 'catchRare' : 'catch');
     if (tierIndex(f.tier) >= 4) this.particles.burst(this.player.pos.clone().setY(this.player.pos.y + 1.5), { count: 50, color: TIERS[f.tier].color, speed: 5, up: 6, life: 1.4 });
     this.events.emit('catch', { fish: f, weight, night: this.time.isNight(), island: this.world.id, perfect, bait: opts.bait, boat: opts.boat, rod: opts.rod });

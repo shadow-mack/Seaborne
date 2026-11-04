@@ -18,18 +18,37 @@ export class Weather {
     const s = this.game.state;
     if (!s) return;
     if (!force && s.weather.day === s.time.day) return;
-    const r = mulberry32(hashString('wx' + s.time.day + s.created));
+    s.weather = this.forecast(s.time.day);
+    const kind = s.weather.kind;
+    if (kind === 'rain' || kind === 'storm') this.game.ui?.toast(`${KINDS[kind].icon} Rain is forecast today. Rare rain fish will bite!`, 'info');
+  }
+  /** The weather for any day of this save — the same every time it's asked. */
+  forecast(day) {
+    const s = this.game.state;
+    const r = mulberry32(hashString('wx' + day + s.created));
     const x = r();
     let kind = 'clear';
-    if (s.time.day > 1) {
+    if (day > 1) {
       if (x < 0.18) kind = 'rain';
       else if (x < 0.24) kind = 'storm';
       else if (x < 0.45) kind = 'cloudy';
     }
     const start = 6 * 60 + r() * 12 * 60;
     const len = 4 * 60 + r() * 8 * 60;
-    s.weather = { day: s.time.day, kind, rainStart: start, rainEnd: start + len };
-    if (kind === 'rain' || kind === 'storm') this.game.ui?.toast(`${KINDS[kind].icon} Rain is forecast today. Rare rain fish will bite!`, 'info');
+    return { day, kind, rainStart: start, rainEnd: start + len };
+  }
+  /** A friendly summary of a day's weather for the observatory. */
+  describe(day) {
+    const w = this.forecast(day);
+    const k = KINDS[w.kind];
+    if (w.kind !== 'rain' && w.kind !== 'storm') return { ...w, icon: k.icon, name: k.name, text: w.kind === 'cloudy' ? 'Clouds, but no rain.' : 'Clear skies all day.', nightRain: false };
+    const hh = (m) => {
+      const h24 = Math.round(m / 60) % 24;
+      return this.game.settings.clock24 ? `${String(h24).padStart(2, '0')}:00` : `${h24 % 12 || 12} ${h24 < 12 ? 'AM' : 'PM'}`;
+    };
+    // rain fades out over its last 40 minutes, so it needs to last a while past 7 PM to count
+    const nightRain = w.rainEnd > 20 * 60;
+    return { ...w, icon: k.icon, name: k.name, nightRain, text: `From about ${hh(w.rainStart)} to ${hh(w.rainEnd)}.${nightRain ? ' It keeps raining after dark — Leviathan weather!' : ''}` };
   }
   /** 0..1 rain intensity right now. */
   intensity() {

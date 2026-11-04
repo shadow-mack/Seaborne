@@ -19,6 +19,8 @@ import { BoatTrip } from './fishing/boatFishing.js';
 import { Intro } from './story/intro.js';
 import { FarmTools } from './farm/farmTools.js';
 import { HomeSystem } from './home/homestead.js';
+import { VillageSystem } from './village/village.js';
+import { AquariumSystem } from './fishing/aquarium.js';
 import { CombatSystem } from './combat/combat.js';
 import { Competition } from './fishing/tournament.js';
 import { newState, saveGame, loadGame, loadSettings, saveSettings } from './shared/save.js';
@@ -76,6 +78,8 @@ export class Game {
     this.farmTools = new FarmTools(this);
     this.intro = new Intro(this);
     this.home = new HomeSystem(this);
+    this.village = new VillageSystem(this);
+    this.aquarium = new AquariumSystem(this);
     this.combat = new CombatSystem(this);
     this.competition = new Competition(this);
     this.dialogue = new Dialogue(this);
@@ -241,6 +245,8 @@ export class Game {
     if (this.competition.active) this.competition.end(true);
     this.state = null;
     this.home.detach();
+    this.village.detach();
+    this.aquarium.detach();
     for (const e of this.world?.enemies || []) e.dispose();
     if (this.world) this.world.enemies = [];
     this.enterTitle();
@@ -261,6 +267,8 @@ export class Game {
     if (this.world) {
       this.boatTrip.reset();
       this.home.detach();
+      this.village.detach();
+      this.aquarium.detach();
       this.world.dispose();
     }
     const def = ISLANDS[id];
@@ -274,6 +282,8 @@ export class Game {
     const w = this.world;
     w.refreshDaily();
     this.home.attach(w);
+    this.village.attach(w);
+    this.aquarium.attach(w);
     this.combat.onWorldLoaded(w);
     w.setBoatModel(this.boatTier());
   }
@@ -441,7 +451,10 @@ export class Game {
     if (r.tent) this.home.pitchTent();
     if (r.buildings) for (const id of r.buildings) this.home.setBuilt(id);
     if (r.animals) for (const [id, n] of Object.entries(r.animals)) for (let i = 0; i < n; i++) this.home.addAnimal(id);
-    if (r.flag) s.flags[r.flag] = true;
+    if (r.flag) {
+      s.flags[r.flag] = true;
+      this.events.emit('flag', { id: r.flag });
+    }
     if (r.xp) this.addXP(r.xp);
     this.quests.refresh();
     this.ui.refreshHud();
@@ -458,15 +471,16 @@ export class Game {
     this.addXP(1);
   }
 
-  sellMultiplier(shop) {
-    return 1 + (shop?.bonus || 0) + (this.state.pet ? PETS_BY_ID[this.state.pet]?.sellBonus || 0 : 0);
+  /** How much a shop pays on top of an item's price (shop, pet, Market Hall, Festival Day). */
+  sellMultiplier(shop, itemId) {
+    return 1 + (shop?.bonus || 0) + (this.state.pet ? PETS_BY_ID[this.state.pet]?.sellBonus || 0 : 0) + this.village.sellBonus(itemId);
   }
   sell(id, n, shop, quiet = false) {
     const it = ITEMS[id];
     const have = this.state.inventory[id] || 0;
     n = Math.min(n, have);
     if (!n || !it) return;
-    const coins = Math.floor(it.sell * this.sellMultiplier(shop)) * n;
+    const coins = Math.floor(it.sell * this.sellMultiplier(shop, id)) * n;
     this.removeItem(id, n);
     this.state.coins += coins;
     this.state.stats.earned += coins;
@@ -728,6 +742,8 @@ export class Game {
     this.world?.update(dt, this.t);
     this.home.updateDecorGlow(env.glow);
     if (playing) this.home.update(dt);
+    this.village.update(dt, env.glow);
+    this.aquarium.update(dt, env.glow);
     if (playing) this.farmTools.update(dt);
     else if (this.farmTools.active) this.farmTools.stop();
 

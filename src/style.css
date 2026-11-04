@@ -1,5 +1,5 @@
 /* ═══════════════════════════════════════════════════════════
-   Tidewander — "sketchbook tropical" UI
+   Seaborne — "sketchbook tropical" UI
    Cream paper, ink outlines, chunky buttons with hard shadows.
    ═══════════════════════════════════════════════════════════ */
 :root {
@@ -897,4 +897,59 @@ body.farm-tool #scene { cursor: none; }
   .intro-bar { height: 8vh; }
   .intro-cap { bottom: calc(8vh + 0.8rem); }
   .intro-skip { top: calc(8vh + 0.6rem); }
+}
+
+/* ── Aquarium ─────────────────────────────────────── */
+.head-note { margin-left: auto; margin-right: 0.6rem; font-weight: 700; font-size: 0.85rem; color: var(--ink-3); white-space: nowrap; }
+.aq-pick { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-bottom: 0.6rem; }
+.aq-pick small { opacity: 0.75; font-weight: 600; }
+.aq-tank { position: relative; aspect-ratio: 16 / 9; max-height: 56vh; width: 100%; margin: 0 auto 0.5rem; overflow: hidden; border: var(--bw) solid var(--ink); border-radius: 18px; background: linear-gradient(180deg, var(--w1), var(--w2)); box-shadow: inset 0 0 40px rgba(0, 20, 40, 0.35); touch-action: manipulation; }
+.aq-rays { position: absolute; inset: -20% 0 0; background: repeating-linear-gradient(100deg, rgba(255, 255, 255, 0.13) 0 6%, transparent 6% 15%); mask-image: linear-gradient(180deg, #000, transparent 75%); -webkit-mask-image: linear-gradient(180deg, #000, transparent 75%); animation: aq-rays 9s ease-in-out infinite alternate; pointer-events: none; }
+@keyframes aq-rays { from { transform: translateX(-4%); } to { transform: translateX(4%); } }
+.aq-scene { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+.aq-bubbles { position: absolute; inset: 0; pointer-events: none; }
+.aq-bubbles i { position: absolute; bottom: -6%; width: 1.1%; aspect-ratio: 1; border: 1.5px solid rgba(255, 255, 255, 0.7); border-radius: 50%; animation: aq-bubble 7s linear infinite; }
+.aq-bubbles i:nth-child(1) { left: 12%; animation-delay: 0s; } .aq-bubbles i:nth-child(2) { left: 15%; animation-delay: 2.1s; width: 0.8%; }
+.aq-bubbles i:nth-child(3) { left: 33%; animation-delay: 4.3s; } .aq-bubbles i:nth-child(4) { left: 47%; animation-delay: 1.2s; width: 1.4%; }
+.aq-bubbles i:nth-child(5) { left: 58%; animation-delay: 5.5s; } .aq-bubbles i:nth-child(6) { left: 66%; animation-delay: 3.1s; width: 0.7%; }
+.aq-bubbles i:nth-child(7) { left: 74%; animation-delay: 0.6s; } .aq-bubbles i:nth-child(8) { left: 81%; animation-delay: 6.2s; width: 1.3%; }
+.aq-bubbles i:nth-child(9) { left: 88%; animation-delay: 2.8s; } .aq-bubbles i:nth-child(10) { left: 25%; animation-delay: 3.7s; width: 0.9%; }
+@keyframes aq-bubble { from { transform: translate(0, 0); opacity: 0; } 10% { opacity: 1; } to { transform: translate(8px, -1200%); opacity: 0; } }
+.aq-fish { position: absolute; left: 0; top: 0; cursor: pointer; border-radius: 40%; outline-offset: 2px; filter: drop-shadow(0 0 6px var(--glow)) drop-shadow(0 6px 4px rgba(0, 20, 40, 0.25)); will-change: left, top, transform; }
+.aq-fish img { display: block; width: 100%; height: auto; pointer-events: none; user-select: none; -webkit-user-select: none; }
+.aq-fish:focus-visible { outline: 3px solid var(--sun); }
+.aq-empty { position: absolute; inset: 0; display: grid; place-items: center; padding: 1rem; text-align: center; color: #fff; font-weight: 700; text-shadow: 0 2px 0 rgba(0, 0, 0, 0.35); }
+.aq-box { display: flex; align-items: center; justify-content: space-between; gap: 0.6rem; flex-wrap: wrap; padding: 0.5rem 0.7rem; border: 2px solid var(--ink); border-radius: 12px; background: #ece4d4; }
+.dex-section { grid-column: 1 / -1; margin: 0.6rem 0 0; }
+body.reduce-motion .aq-rays, body.reduce-motion .aq-bubbles i { animation: none; }
+body.reduce-motion .aq-bubbles { display: none; }
+
+/* ── Village projects & forecast ─────────────────── */
+.project { margin-bottom: 0.8rem; padding: 0.7rem 0.8rem; border: 2px solid var(--ink); border-radius: 14px; background: #ece4d4; }
+.project.built { background: #e3efd8; }
+.project.focus { box-shadow: 0 0 0 3px var(--sun); }
+.project-head { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 0.6rem; }
+.project-icon { font-size: 2rem; }
+.perk { margin: 0.4rem 0; font-weight: 600; color: var(--sea-deep); }
+.needs { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 0.45rem; }
+.need { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 0.5rem; padding: 0.35rem 0.5rem; border: 2px solid var(--ink); border-radius: 12px; background: var(--paper); }
+.need.done { opacity: 0.75; }
+.need-icon { width: 34px; display: grid; place-items: center; font-size: 1.5rem; }
+.need-info { display: grid; gap: 0.15rem; min-width: 0; }
+.fc-day { display: grid; grid-template-columns: auto 1fr; align-items: center; gap: 0.7rem; margin-bottom: 0.5rem; padding: 0.55rem 0.7rem; border: 2px solid var(--ink); border-radius: 12px; background: #ece4d4; }
+.fc-day.night-rain { background: #d6e4f2; }
+.fc-icon { font-size: 2rem; }
+
+/* ── Friends ─────────────────────────────────────── */
+.qmark.heart { background: #ffd6e2; color: var(--berry); }
+.friend-row { display: grid; grid-template-columns: minmax(9rem, 1.2fr) auto 1.4fr; align-items: center; gap: 0.6rem; padding: 0.45rem 0.6rem; border-bottom: 2px dashed #d8cbb0; }
+.friend-name { display: grid; }
+@media (max-width: 620px) {
+  .friend-row { grid-template-columns: 1fr auto; }
+  .friend-row > :last-child { grid-column: 1 / -1; }
+  .project-head { grid-template-columns: auto 1fr; }
+  .project-head > :last-child { grid-column: 1 / -1; justify-self: start; }
+}
+@media (orientation: landscape) and (max-height: 520px) {
+  .aq-tank { max-height: 62vh; width: auto; }
 }

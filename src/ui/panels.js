@@ -13,6 +13,8 @@ import { KITCHEN_PANELS } from '../kitchen/panel.js';
 import { SHOP_PANELS } from '../people/shopPanel.js';
 import { STORY_PANELS } from '../story/panel.js';
 import { WARDROBE_PANELS } from '../people/wardrobePanel.js';
+import { VILLAGE_PANELS } from '../village/panel.js';
+import { AQUARIUM_PANELS } from '../fishing/aquariumPanel.js';
 
 // The general menus (bag, map, pause, settings, help) live here; each feature folder adds its own.
 // ════════════════════════════════════════════════════════════
@@ -402,4 +404,4 @@ function seaChart(ui, travel) {
 // ── kitchen ─────────────────────────────────────────
 
 /** Every menu panel in the game, by name (ui.openPanel(name)). */
-export const PANELS = { ...BASE_PANELS, ...STORY_PANELS, ...WARDROBE_PANELS, ...SHOP_PANELS, ...HOME_PANELS, ...KITCHEN_PANELS, ...FISHING_PANELS, ...FARM_PANELS };
+export const PANELS = { ...BASE_PANELS, ...STORY_PANELS, ...WARDROBE_PANELS, ...SHOP_PANELS, ...HOME_PANELS, ...KITCHEN_PANELS, ...FISHING_PANELS, ...FARM_PANELS, ...VILLAGE_PANELS, ...AQUARIUM_PANELS };

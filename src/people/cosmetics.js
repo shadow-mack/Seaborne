@@ -34,6 +34,9 @@ export const COSMETICS = {
   pirate_vest: { slot: 'top', name: 'Pirate Vest', color: '#5a2a2a', sleeve: 'none', trim: '#e8d8b0', price: 0, gems: 25 },
   starry_robe: { slot: 'top', name: 'Starry Robe', color: '#2a2f6b', sleeve: 'long', pattern: ['dots', '#ffe48a'], price: 0, gems: 45 },
   ember_jacket: { slot: 'top', name: 'Ember Jacket', color: '#d9542a', sleeve: 'long', trim: '#2a2534', price: 1500 },
+  aquarium_tee: { slot: 'top', name: 'Aquarium Tee', color: '#2f7fa8', sleeve: 'short', pattern: ['dots', '#9bf0c8'], price: 0, reward: true },
+  curator_coat: { slot: 'top', name: 'Curator\'s Coat', color: '#1f4f6e', sleeve: 'long', trim: '#f2c94c', price: 0, reward: true },
+  festival_shirt: { slot: 'top', name: 'Festival Shirt', color: '#f7c95c', sleeve: 'short', pattern: ['floral', '#d9534f', '#58b4a5'], price: 0, reward: true },
 
   // Bottoms ─────────────────────────────
   shorts_khaki: { slot: 'bottom', name: 'Khaki Shorts', color: '#c8b48a', kind: 'shorts', price: 0 },

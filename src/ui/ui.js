@@ -144,6 +144,12 @@ export class UI {
     if (input.mouse.clicked && !g.farmTools?.active) {
       const at = { x: input.mouse.lastX, y: input.mouse.lastY };
       const thing = this.pickWorldThing(at, 60) || this.groundThing(at);
+      // some places open straight away when you tap them up close (like the aquarium)
+      const open = thing?.tapOpen || thing?.key?.tapOpen;
+      if (open && open()) {
+        this.hideTip(true);
+        return;
+      }
       // tapping the same thing again closes it
       if (thing && this._worldTip && thing.key === this._worldTip.key) this.hideTip(true);
       else if (thing) {
@@ -174,7 +180,7 @@ export class UI {
       const sp = this.project(v);
       if (!sp) continue;
       // things further away need a closer aim
-      const d = Math.hypot(sp.x - at.x, sp.y - at.y) * (th.key?.def || th.key?.boss !== undefined ? 0.8 : 1);
+      const d = Math.hypot(sp.x - at.x, sp.y - at.y) * (th.pickBias ?? (th.key?.def || th.key?.boss !== undefined ? 0.8 : 1));
       if (d < bd) {
         bd = d;
         best = th;

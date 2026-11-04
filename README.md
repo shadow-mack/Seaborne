@@ -1,4 +1,4 @@
-# Tidewander — 3D Island Game
+# Seaborne — a cozy 3D island life game
 
 A cozy island-life adventure built with **Three.js**: fish, farm, build, sail, make friends and fight pirates across a hand-drawn, cel-shaded archipelago.
 
@@ -36,9 +36,12 @@ Touch devices get an on-screen joystick and action buttons.
 - **Farm animals** — chickens, cows, goats, bee hives, sheep and truffle pigs. Bob repairs or builds their homes and a feeder; turn your crops into feed, collect eggs, milk, honey, wool and truffles, and later some fertiliser too.
 - **Kitchen** — a recipe book with 68 recipes across six categories (basics, drinks, snacks, meals, desserts, feasts) that unlock as you level up. You choose exactly which fish goes into each dish. Cooked food sells for far more and heals you.
 - **Building** — upgrade from tent to Seaside Manor (more max health each time) and place decorations.
+- **Palmora Aquarium** — from level 5, help Megan build an aquarium on the dock road and donate one of each of the 44 fish species. Tap the building (or press E at its door) to look inside: three tanks (Lagoon, Reef Hall and The Abyss) where your donated fish swim — tap any fish for its details. The glass front shows some of them from outside, visitors pay daily ticket money, and Megan has rewards at 12, 20, 30 and all 44 species.
+- **Village restoration** — the Great Storm wrecked half of Palmora. On the Project Board by the Town Hall, fund five buildings with coins, materials and food; Bob builds each one overnight. Each one has a perk: the Fountain (level 4) doubles friendship from chatting, the Windmill (6) doubles Kitchen Basics, the Market Hall (9) adds 10% to every sale, the Observatory (11) forecasts the weather 3 days ahead, and the Festival Stage (14) turns every 7th day into Festival Day (+50% for cooked food).
 - **Economy** — sell fish, fruit, food and treasure for coins; earn gems from rare catches, quests, tournaments, digging and bounties. Levelling starts quick (200 XP for level 2) and slows down later.
 - **4 islands** — Palmora (home), Coralia Reef (fishing tournaments), Ember Isle (volcano, blacksmith, hot spring) and Skull Cay (pirate lair and boss).
-- **16 islanders** with lots of non-repeating dialogue, friendship hearts and gifts; a 17-part main story and 32 side quests that introduce every feature; daily bounties, a daily login streak, and weather (rain & storms).
+- **16 islanders** with lots of non-repeating dialogue, friendship hearts and gifts; a 17-part main story and 42 side quests that introduce every feature; daily bounties, a daily login streak, and weather (rain & storms).
+- **Friendship stories** — every islander has a three-chapter personal story (48 quests), offered at 3, 6 and 10 hearts. Islanders with one to share show a ♥, and the quest log's Friends tab tracks everyone's hearts and chapters.
 - **Plays anywhere** — keyboard & mouse, or touch with an on-screen joystick (phone landscape supported). Details pop up only when you tap something.
 - **Accessible UI** — keyboard navigable, text-size options, high-contrast mode, reduced motion, rarity shown with icons + text (not colour alone), screen-reader announcements.
 
@@ -51,13 +54,14 @@ src/
   main.js, game.js   boot, game loop, camera, saving, coins/XP, buying & selling
   shared/    item catalogue, input, events, helpers, audio, save files, game clock
   world/     islands, terrain, ocean, sky, weather, trees & buildings, critters, foraging
-  fishing/   fish, rods & lures, boats, fishing minigame, boat fishing, tournaments
+  fishing/   fish, rods & lures, boats, fishing minigame, boat fishing, tournaments, aquarium
   farm/      crops, fruit trees, animals, farm buildings, the field, farm tools, feeder
   kitchen/   recipes, cooking, the recipe book, kitchen models
   home/      your house & upgrades, tent, decorations, home menu
   people/    your character, islanders, dialogue, shops, outfits, pets
   combat/    weapons, pirates, fighting
-  story/     main & side quests, quest log, waypoint guide, opening cutscene
+  village/   Palmora restoration: the Project Board, five projects, their models and perks
+  story/     main & side quests, friendship stories, quest log, waypoint guide, opening cutscene
   ui/        HUD, menus, title & character creator, icons
 ```
 

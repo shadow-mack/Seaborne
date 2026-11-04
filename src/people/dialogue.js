@@ -146,6 +146,7 @@ export class Dialogue {
     const turnIn = g.quests.canTurnIn(npc.id);
     const offers = g.quests.offers(npc.id);
     if (turnIn.length) lines.push('Oh! Did you bring what I asked for? Pick "Hand over" below!');
+    else if (offers.length && offers[0].friend) lines.push(`${g.state.name}... can I tell you something personal? Pick "♥ ${offers[0].title}" below.`);
     else if (offers.length) lines.push(`Say, ${g.state.name}... could you help me with something? Pick "Request: ${offers[0].title}" below.`);
     else {
       // remind about this islander's request at most once a day; otherwise maybe a remark
@@ -299,7 +300,7 @@ export class Dialogue {
       }, 'primary');
     }
     for (const q of g.quests.offers(npc.id)) {
-      opt(`❔ Request: ${escapeHtml(q.title)}`, () => {
+      opt(q.friend ? `♥ ${escapeHtml(q.title)}` : `❔ Request: ${escapeHtml(q.title)}`, () => {
         this.say([this.fill(q.offer)], () => {
           this.inMenu = true;
           o.innerHTML = '';
@@ -378,7 +379,7 @@ export class Dialogue {
     const line = this.fresh(npc.id, pool);
     if (r.chatDay !== g.state.time.day) {
       r.chatDay = g.state.time.day;
-      this.addPts(npc.id, 3);
+      this.addPts(npc.id, g.village.chatPoints(3));
     }
     this.say(this.toPages(line), () => this.talkMenu());
   }
@@ -423,6 +424,7 @@ export class Dialogue {
     const after = this.hearts(id);
     if (after > before) {
       g.ui.toast(`❤ ${this.npc?.def.name ?? 'Friend'} — ${after} hearts!`, 'good');
+      if (g.quests.offers(id).some((q) => q.friend && q.hearts > before && q.hearts <= after)) g.ui.toast(`♥ ${this.npc?.def.name ?? 'They'} want${this.npc ? 's' : ''} to tell you something personal — pick their request!`, 'quest');
       for (const lvl of Object.keys(HEART_REWARDS).map(Number)) {
         if (after >= lvl && !r.rewards.includes(lvl)) {
           r.rewards.push(lvl);

@@ -334,10 +334,13 @@ export class Hud {
     this._lblT = 20;
     const talkTargets = new Set(g.quests.tracker().filter((t) => t.target).map((t) => t.target));
     for (const n of w.npcs) {
-      const offer = g.quests.offers(n.id).length > 0 || g.quests.canTurnIn(n.id).length > 0;
+      const offers = g.quests.offers(n.id);
+      const offer = offers.length > 0 || g.quests.canTurnIn(n.id).length > 0;
       const talk = talkTargets.has(n.id);
       n.questMark = talk || offer;
-      const mark = talk ? '<span class="qmark main">!</span>' : offer ? '<span class="qmark">?</span>' : '';
+      // a heart for a friendship story, a question mark for any other request
+      const heart = offers.length > 0 && offers.every((q) => q.friend);
+      const mark = talk ? '<span class="qmark main">!</span>' : heart ? '<span class="qmark heart">♥</span>' : offer ? '<span class="qmark">?</span>' : '';
       const shop = n.def.shop ? '<span class="shopmark" aria-hidden="true">🛒</span>' : '';
       n.label?.set(`${mark}<span class="nm">${escapeHtml(n.def.name)}${shop}</span><span class="nt">${escapeHtml(n.def.title)}</span>`);
     }

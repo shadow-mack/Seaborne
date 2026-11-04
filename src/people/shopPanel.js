@@ -113,16 +113,17 @@ function sellTab(ui, shop) {
   const wrap = h('div', { class: 'sell' });
   const bonus = g.sellMultiplier(shop);
   if (bonus > 1) wrap.append(h('p', { class: 'goodline', text: `✨ Bonus: +${Math.round((bonus - 1) * 100)}% coins here` }));
+  if (g.village.isFestival()) wrap.append(h('p', { class: 'goodline', text: '🎪 Festival Day: cooked food sells for 50% more!' }));
   if (!items.length) {
     wrap.append(empty(`Nothing to sell here. This shop buys: ${shop.sells.map((t) => TYPE_LABEL[t]).join(', ')}.`, '🪙'));
     return wrap;
   }
-  const total = items.reduce((sum, [id, n]) => sum + Math.floor(ITEMS[id].sell * bonus) * n, 0);
+  const total = items.reduce((sum, [id, n]) => sum + Math.floor(ITEMS[id].sell * g.sellMultiplier(shop, id)) * n, 0);
   wrap.append(h('div', { class: 'sell-all' }, [h('span', { html: `Everything: <b>🪙 ${formatNum(total)}</b>` }), btn('Sell everything', () => { for (const [id, n] of items) g.sell(id, n, shop, true); g.audio.sfx('coin'); ui.refreshPanel(); }, 'primary')]));
   const list = h('div', { class: 'shop-list' });
   for (const [id, n] of items) {
     const it = ITEMS[id];
-    const each = Math.floor(it.sell * bonus);
+    const each = Math.floor(it.sell * g.sellMultiplier(shop, id));
     list.append(
       h('div', { class: 'shop-row', ...tipAttrs(itemTip(id, n)) }, [
         h('div', { class: 'shop-icon', html: itemIconHTML(id, 40) }),

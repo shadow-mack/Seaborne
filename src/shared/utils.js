@@ -132,8 +132,13 @@ export function el(tag, attrs = {}, children = []) {
     if (k === 'class') e.className = v;
     else if (k === 'html') e.innerHTML = v;
     else if (k === 'text') e.textContent = v;
-    else if (k === 'style' && typeof v === 'object') Object.assign(e.style, v);
-    else if (k.startsWith('on') && typeof v === 'function') e.addEventListener(k.slice(2).toLowerCase(), v);
+    else if (k === 'style' && typeof v === 'object') {
+      // CSS custom properties (--tier…) need setProperty; Object.assign silently drops them
+      for (const [sk, sv] of Object.entries(v)) {
+        if (sk.startsWith('--')) e.style.setProperty(sk, sv);
+        else e.style[sk] = sv;
+      }
+    } else if (k.startsWith('on') && typeof v === 'function') e.addEventListener(k.slice(2).toLowerCase(), v);
     else e.setAttribute(k, v === true ? '' : v);
   }
   for (const c of [].concat(children)) {

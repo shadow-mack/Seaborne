@@ -83,7 +83,7 @@ function recipeCard(ui, p, r) {
   }, [
     h('span', { class: 'kc-name', text: out.name }),
     h('span', { class: 'kc-img', html: itemIconHTML(r.out, 58) }),
-    h('span', { class: 'kc-sell', html: `🪙 <b>${out.sell * (r.qty || 1)}</b>` }),
+    h('span', { class: 'kc-sell', html: `🪙 <b>${out.sell * g.village.basicsQty(r)}</b>` }),
     h('span', { class: 'kc-state', text: locked ? `🔒 Level ${r.level}` : can ? '✓ Ready to cook' : `Missing ${missing}` }),
   ]);
 }
@@ -138,7 +138,7 @@ function recipeDetail(ui, p) {
     if (i) parts.push(h('span', { class: 'kd-op', text: '+' }));
     parts.push(x);
   });
-  parts.push(h('span', { class: 'kd-op', text: '=' }), h('div', { class: 'kd-out' }, [h('span', { class: 'kd-icon', html: itemIconHTML(r.out, 64) }), h('b', { text: `${r.qty > 1 ? `${r.qty}× ` : ''}${out.name}` })]));
+  parts.push(h('span', { class: 'kd-op', text: '=' }), h('div', { class: 'kd-out' }, [h('span', { class: 'kd-icon', html: itemIconHTML(r.out, 64) }), h('b', { text: `${g.village.basicsQty(r) > 1 ? `${g.village.basicsQty(r)}× ` : ''}${out.name}` })]));
   // choose which fish to use for "any fish" style inputs
   p.fishPick = p.fishPick || {};
   const fishKeys = Object.keys(r.inputs).filter((k) => FISH_INPUTS[k]);
@@ -228,7 +228,7 @@ function recipeDetail(ui, p) {
       let made = 0;
       for (let i = 0; i < n; i++) if (g.cook(r.id, { fish: fishOpts })) made++;
       if (made) {
-        g.ui.toast(`🍳 Cooked ${made * (r.qty || 1)}× ${out.icon} ${out.name}!`, 'good');
+        g.ui.toast(`🍳 Cooked ${made * g.village.basicsQty(r)}× ${out.icon} ${out.name}!`, 'good');
         g.ui.refreshHud();
       }
       ui.renderPanel();

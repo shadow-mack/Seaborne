@@ -3,7 +3,7 @@ import { FISH_BY_ID, tierIndex } from '../fishing/fish.js';
 import { ITEMS } from '../shared/items.js';
 import { mulberry32, hashString } from '../shared/utils.js';
 
-const EVENTS = ['catch', 'sell', 'talk', 'visit', 'defeat', 'plant', 'harvest', 'build', 'cook', 'compete', 'buy', 'collect', 'inventory', 'level', 'own', 'construct', 'water', 'fertilize', 'makefeed', 'sleep', 'wear', 'equip', 'gift', 'bounty', 'home'];
+const EVENTS = ['catch', 'sell', 'talk', 'visit', 'defeat', 'plant', 'harvest', 'build', 'cook', 'compete', 'buy', 'collect', 'inventory', 'level', 'own', 'construct', 'water', 'fertilize', 'makefeed', 'sleep', 'wear', 'equip', 'gift', 'bounty', 'home', 'forecast'];
 
 export class QuestSystem {
   constructor(game) {
@@ -61,7 +61,7 @@ export class QuestSystem {
 
   /** Side quests this NPC can offer right now. */
   offers(npcId) {
-    return Object.values(QUESTS).filter((q) => q.giver === npcId && !this.s.active[q.id] && !this.s.done.includes(q.id) && (!q.requires || this.s.done.includes(q.requires)) && (!q.minLevel || this.game.state.level >= q.minLevel));
+    return Object.values(QUESTS).filter((q) => q.giver === npcId && !this.s.active[q.id] && !this.s.done.includes(q.id) && (!q.requires || this.s.done.includes(q.requires)) && (!q.minLevel || this.game.state.level >= q.minLevel) && (!q.hearts || this.game.dialogue.hearts(npcId) >= q.hearts));
   }
 
   matches(obj, ev, d) {
@@ -118,6 +118,7 @@ export class QuestSystem {
       case 'gift':
       case 'bounty':
       case 'home':
+      case 'forecast':
         return ev === obj.type && (!t || t === '*' || d.id === t || d.npc === t) ? d.count ?? 1 : 0;
       default:
         return 0;
@@ -146,6 +147,8 @@ export class QuestSystem {
         if (kind === 'irrigation') return (s.farm.irrigation || 0) >= Number(id) ? 1 : 0;
         if (kind === 'pet') return s.pets.length > 0 ? 1 : 0;
         if (kind === 'dex') return Object.keys(s.fishdex).length >= Number(id) ? 1 : 0;
+        if (kind === 'project') return g.village.isBuilt(id) ? 1 : 0;
+        if (kind === 'aquarium') return Math.min(obj.count ?? 1, g.aquarium.count());
         return 0;
       }
       default:

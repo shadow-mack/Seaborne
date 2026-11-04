@@ -1,3 +1,5 @@
+import { FRIEND_QUESTS } from './friendship.js';
+
 // Objectives run in order. Types:
 //  talk(npc) · catch(target, count) · sell(target, count) · have(item, count) · plant · harvest · water
 //  build(level) · visit(island) · defeat(kind, count) · compete(place) · cook(target) · buy(target)
@@ -687,6 +689,155 @@ Object.assign(QUESTS, {
     rewards: { coins: 600, gems: 10, xp: 250 },
   },
 });
+// ── Palmora Aquarium (Megan) ─────────────────────────
+// A long-running collection: build it around level 5, then fill three tanks up to all 44 species.
+Object.assign(QUESTS, {
+  aq1: {
+    title: 'A Home for Fish', giver: 'marina', turnIn: 'bo', requires: 'm5', minLevel: 5,
+    desc: 'Megan dreams of an aquarium on Palmora, where everyone can see the fish you catch.',
+    offer: 'Can I tell you my big dream, {name}? An aquarium! Right by the dock road, so kids can meet fish without getting wet. Bob says he can build it if we bring him the materials. Help me?',
+    objectives: [
+      {
+        type: 'talk', target: 'marina', text: 'Hear Megan\'s plan', hint: 'Megan runs the fish market at the start of the dock.',
+        lines: [
+          'Oh, thank you! I\'ve drawn the plans a hundred times. Big glass tanks, coral, kelp — and every fish of the archipelago!',
+          { you: 'Where do the fish come from?' },
+          'From you, of course! You donate one of each species you catch. Junk doesn\'t count — no one buys a ticket to see a boot.',
+          'Visitors pay a few coins each day to see them, and that ticket money is yours to collect. Now, go and see Bob!',
+        ],
+      },
+      {
+        type: 'talk', target: 'bo', text: 'Ask Bob about the aquarium', hint: 'Bob\'s workshop has a straw roof, east of the village square.',
+        lines: [
+          'An aquarium! Megan\'s been talking about that for years. Glass, I can get. Wood and stone, you\'ll need to bring.',
+          'Twenty driftwood and twelve stone. Then I\'ll build it on the empty lot by the dock road.',
+        ],
+      },
+      { type: 'have', target: 'driftwood', count: 20, text: 'Bring Bob 20 Driftwood', consume: true, hint: 'Walk over driftwood on any beach (or buy 5 for 16 coins from Bob). Then talk to Bob → "Hand over".' },
+      { type: 'have', target: 'stone', count: 12, text: 'Bring Bob 12 Stone', consume: true, hint: 'Pick up small stones near big grey rocks (or buy them from Bob). Then talk to Bob → "Hand over".' },
+      {
+        type: 'talk', target: 'bo', text: 'Talk to Bob to build the aquarium', hint: 'Bob\'s workshop has a straw roof, east of the village square.',
+        lines: [
+          'Right! Glass, check. Wood, check. Stone, check. Stand back! *hammering* *a long, careful pause* *more hammering*',
+          'There she is — the Palmora Aquarium, on the dock road! Go and give Megan her first fish.',
+        ],
+        give: { flag: 'aquarium' },
+      },
+      { type: 'own', target: 'aquarium', count: 3, text: 'Donate 3 species to the aquarium', hint: 'Walk to the aquarium on the dock road and press E (or tap it) → Donate. You need the fish in your bag.' },
+      {
+        type: 'talk', target: 'marina', text: 'Tell Megan the aquarium is open', hint: 'Megan runs the fish market at the start of the dock.',
+        lines: ['I saw it! I SAW it! Three real fish, swimming! I may have cried a little.', 'Every species you add makes it better. Come and tell me when the tanks fill up — I\'ll have something for you.'],
+      },
+    ],
+    rewards: { coins: 300, gems: 5, xp: 250 },
+  },
+  aq2: {
+    title: 'The Lagoon Tank', giver: 'marina', requires: 'aq1', minLevel: 6,
+    desc: 'Megan wants the aquarium to show a real variety of island fish.',
+    offer: 'Visitors are lining up! Could we reach 12 species? Common fish count — every one helps.',
+    objectives: [{ type: 'own', target: 'aquarium', count: 12, text: 'Have 12 species in the aquarium', hint: 'Catch new species and donate them at the aquarium (press E → Donate). Try fishing at night, in the rain and on other islands.' }],
+    rewards: { gems: 10, xp: 300, cosmetics: ['aquarium_tee'] },
+  },
+  aq3: {
+    title: 'The Reef Hall', giver: 'marina', requires: 'aq2', minLevel: 8,
+    desc: 'Megan has opened the Reef Hall for rarer fish.',
+    offer: 'I opened the Reef Hall! Rare and epic fish need a home. Can we get the aquarium to 20 species?',
+    objectives: [{ type: 'own', target: 'aquarium', count: 20, text: 'Have 20 species in the aquarium', hint: 'Rare fish bite more with better rods and lures. Coralia\'s reef and night fishing have lots of new species.' }],
+    rewards: { gems: 15, xp: 450, items: { decor_fish_trophy: 1, bait_spinner: 8 } },
+  },
+  aq4: {
+    title: 'Into the Abyss', giver: 'marina', requires: 'aq3', minLevel: 11,
+    desc: 'The Abyss tank is ready for legends of the deep.',
+    offer: 'Bob finished the Abyss tank — dark and deep, for legendary fish. Let\'s get to 30 species!',
+    objectives: [{ type: 'own', target: 'aquarium', count: 30, text: 'Have 30 species in the aquarium', hint: 'Check which fish are missing on the aquarium\'s Donate tab — it shows where and when each one bites.' }],
+    rewards: { gems: 25, xp: 700, items: { bait_magic: 5 } },
+  },
+  aq5: {
+    title: 'Master Curator', giver: 'marina', requires: 'aq4', minLevel: 13,
+    desc: 'Only a true master angler could fill every tank.',
+    offer: 'You know what would make this the greatest aquarium in the world? Every single species. All 44. Even the Leviathan... if you dare.',
+    objectives: [{ type: 'own', target: 'aquarium', count: 44, text: 'Complete the aquarium (all 44 species)', hint: 'The last ones are the rarest: legendary fish, the Aurora Whale (daytime, from a boat) and the Leviathan (rainy nights).' }],
+    rewards: { coins: 5000, gems: 100, xp: 2000, cosmetics: ['curator_coat'] },
+  },
+});
+
+// ── Palmora restoration (Project Board) ─────────────
+// One project opens every few levels; each needs coins and goods, and Bob builds it overnight.
+Object.assign(QUESTS, {
+  v_fountain: {
+    title: 'Palmora Restoration', giver: 'mayor', requires: 'm4b', minLevel: 4,
+    desc: 'The Great Storm wrecked half the village years ago. Mayor Mike wants to rebuild — starting with the fountain.',
+    offer: '{name}, may I ask a big favour? Years ago the Great Storm wrecked half our village. I\'ve put up a Project Board by the Town Hall. First on the list: the old fountain. Will you help?',
+    objectives: [
+      {
+        type: 'talk', target: 'mayor', text: 'Hear the Mayor\'s plan', hint: 'Mayor Mike is in the village square.',
+        lines: [
+          'Wonderful! The fountain was where everyone met. People chatted for hours there — the whole village felt like family.',
+          'Here\'s how it works: the Project Board by the Town Hall lists what each project needs. Put in coins and goods whenever you have them.',
+          { you: 'And then?' },
+          'Once a project is fully funded, Bob builds it overnight. By morning — ta-da! And every building we restore helps you out, too.',
+        ],
+      },
+      { type: 'own', target: 'project:fountain', text: 'Restore the Village Fountain', hint: 'Press E at the Project Board beside the Town Hall (or at the ruined fountain east of the dock road) and give coins, stone, driftwood, shells and starfish. Bob builds it overnight.' },
+      {
+        type: 'talk', target: 'mayor', text: 'Celebrate with Mayor Mike', hint: 'Mayor Mike is in the village square.',
+        lines: ['Did you see it? Water flowing again! Folks are already gathering there to gossip.', 'With the fountain back, people will warm up to you twice as fast when you chat with them. That\'s Palmora magic!'],
+      },
+    ],
+    rewards: { coins: 200, gems: 5, xp: 200 },
+  },
+  v_windmill: {
+    title: 'The Old Windmill', giver: 'coco', requires: 'v_fountain', minLevel: 6,
+    desc: 'Chloe remembers when the windmill ground wheat for the whole island.',
+    offer: 'Remember the broken windmill by the western path? My grandma says it used to grind flour for everyone. If we fix it, your kitchen will make twice the flour! Want to try?',
+    objectives: [
+      { type: 'own', target: 'project:windmill', text: 'Restore the Windmill', hint: 'Use the Project Board by the Town Hall (or press E at the windmill ruins west of the dock road). It needs coins, driftwood, stone and 20 wheat.' },
+      { type: 'cook', target: 'flour', count: 1, text: 'Make Flour with the windmill\'s help', hint: 'Kitchen → Basics → Flour. Now every batch makes two!' },
+    ],
+    rewards: { coins: 300, xp: 300, items: { seed_wheat: 10, seed_sugarcane: 6 } },
+  },
+  v_market: {
+    title: 'Market Hall', giver: 'marina', requires: 'v_windmill', minLevel: 9,
+    desc: 'Megan wants traders from every island back in Palmora.',
+    offer: 'Before the storm, traders came from every island to the Market Hall behind the Town Hall. If we rebuild it, every shop pays better. I\'d bring my best fish!',
+    objectives: [
+      { type: 'own', target: 'project:market', text: 'Rebuild the Market Hall', hint: 'Use the Project Board. Besides coins, wood and stone, it needs cooked food: Fruit Salad, Fish Tacos and Berry Jam.' },
+      { type: 'sell', target: '*', count: 10, text: 'Sell 10 items at the better prices', hint: 'Sell anything in any shop — the Market Hall adds 10%.' },
+    ],
+    rewards: { gems: 10, xp: 400, items: { decor_umbrella: 1 } },
+  },
+  v_observatory: {
+    title: 'Eyes on the Sky', giver: 'moth', requires: 'v_market', minLevel: 11,
+    desc: 'Madison knows the old observatory on the western hill could read the weather days ahead.',
+    offer: 'The stargazers\' dome on the western hill... its telescope could read the clouds three days ahead. Rebuild it, and you\'ll always know when the rain fish — and the Leviathan — will come.',
+    objectives: [
+      { type: 'own', target: 'project:observatory', text: 'Restore the Star Observatory', hint: 'Use the Project Board. It needs stone, obsidian from Ember Isle, coral pieces from Coralia and pearls.' },
+      { type: 'forecast', text: 'Read the forecast at the observatory', hint: 'Walk up the hill north of your homestead to the observatory and press E.' },
+    ],
+    rewards: { gems: 15, xp: 500, items: { bait_jig: 8 } },
+  },
+  v_stage: {
+    title: 'The Grand Festival', giver: 'mayor', requires: 'v_observatory', minLevel: 14,
+    desc: 'The last project: a festival stage to celebrate Palmora\'s comeback.',
+    offer: 'Look at our village, {name}! Fountain, windmill, market, observatory... One thing left: a Festival Stage by the shore. Then we throw the biggest party the islands have ever seen!',
+    objectives: [
+      { type: 'own', target: 'project:stage', text: 'Build the Festival Stage', hint: 'Use the Project Board. It needs plenty of wood and stone, wool for the bunting, and party food: pizza, cake and Seafood Feasts.' },
+      {
+        type: 'talk', target: 'mayor', text: 'Open the festival with Mayor Mike', hint: 'Mayor Mike is in the village square.',
+        lines: [
+          'Ahem! *taps a coconut microphone* People of Palmora! Look around you. The storm took a lot from us...',
+          '...but one washed-up stranger helped us build it all back. {name}, this festival is for you!',
+          { you: 'It was a team effort!' },
+          'From now on, every seventh day is Festival Day! The plaza lights up, and everyone pays extra for good food. Let the party begin!',
+        ],
+      },
+    ],
+    rewards: { coins: 2000, gems: 30, xp: 800, cosmetics: ['festival_shirt'] },
+  },
+});
+
+Object.assign(QUESTS, FRIEND_QUESTS);
+
 // Palmora helpers open up early so there is always something to do.
 QUESTS.s_pip.requires = 'm1';
 QUESTS.s_luna.requires = 's_style';

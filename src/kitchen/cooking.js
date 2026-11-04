@@ -50,7 +50,7 @@ export const CookingMethods = {
       if (FISH_INPUTS[k]) for (const [f, c] of Object.entries(plans[k])) this.removeItem(f, c, true);
       else this.removeItem(RECIPE_ALIASES[k] || k, n, true);
     }
-    this.addItem(r.out, r.qty || 1, true);
+    this.addItem(r.out, this.village.basicsQty(r), true);
     if (this.home.firePos && this.world?.id === 'palmora') {
       const from = this.home.firePos.clone().setY(this.home.firePos.y + 1);
       this.particles.burst(from, { count: 16, color: '#f4f1e8', speed: 0.8, up: 3, life: 1.2, gravity: -1 });
